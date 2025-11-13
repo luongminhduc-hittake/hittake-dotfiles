@@ -9,14 +9,14 @@
   "modules-left": [
     "custom/omarchy", 
     "hyprland/workspaces",
-    "custom/update",
-    "mpris"
+    "tray",
+    "custom/update"
   ],
   "modules-center": [
      "custom/screenrecording-indicator"
   ],
   "modules-right": [
-    "tray",
+    "mpris",
     "bluetooth",
     "network",
     "pulseaudio",
