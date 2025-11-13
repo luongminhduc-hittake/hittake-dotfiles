@@ -104,9 +104,9 @@
 
 /* --- Module giữa --- */
 #mpris {
- border: 1px solid @maroon;
+ border: 1px solid @text;
  color: @text;
- margin-left: 4px;
+ margin-right: 4px;
 }
 #mpris .title {
  font-weight: bold;
