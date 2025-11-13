@@ -1,4 +1,4 @@
-/* --- ĐỊNH NGHĨA MÀU CATPPUCCIN MOCHA (ĐÃ NHÚNG TRỰC TIẾP) --- */
+/* --- ĐỊNH NGHĨA MÀU CATPPUCCIN MOCHA --- */
 @define-color rosewater #f5e0dc;
 @define-color flamingo #f2cdcd;
 @define-color pink #f5c2e7;
@@ -26,7 +26,7 @@
 @define-color mantle #181825;
 @define-color crust #11111b;
 
-/* --- THIẾT LẬP CHUNG: Áp dụng style Omarchy phẳng --- */
+/* --- THIẾT LẬP CHUNG --- */
 * {
  background-color: transparent;
  color: @text;
@@ -38,18 +38,18 @@
 }
 
 #waybar {
- /* * Sửa lại nền waybar (từ file cuối của bạn).
-   * Nếu muốn nền @base thì đổi "transparent" thành "@base"
-   */
+ /* Nếu muốn nền màu @base thì đổi "transparent" thành "@base" */
  background: transparent;
  color: @text;
  margin: 5px 5px;
 }
 
-/* Khoảng cách cho nhóm module */
+/* Khoảng cách cho nhóm module trái/phải */
 .modules-left { margin-left: 8px; }
 .modules-right { margin-right: 8px; }
-/* --- STYLE CÁC MODULE DẠNG VIÊN THUỐC --- */
+
+/* --- STYLE MODULE CHUNG (DẠNG VIÊN THUỐC) --- */
+/* Áp dụng style nền và bo tròn chung cho các module */
 #hyprland-window,
 #window,
 #bluetooth,
@@ -61,57 +61,50 @@
 #custom-screenrecording-indicator,
 #tray,
 #mpris {
-padding: 0 9px;
-background-color: @surface0;
-border-radius: 20px;
-margin: 1px 0;
+  padding: 0 9px;
+  background-color: @surface0;
+  border-radius: 20px;
+  margin: 1px 0;
 }
+
+/* Style riêng cho module Omarchy và Update (padding khác và có viền) */
 #custom-update,
 #custom-omarchy {
   padding: 0 10px;
   background-color: @surface0;
   border-radius: 20px;
   margin: 1px 0;
+  border: 1px solid @mauve;
 }
 
-#waybar {
-  background: transparent;
-  color: @text;
-  margin: 5px 5px;
-}
-
+/* Style riêng cho Workspaces */
 #workspaces {
   border-radius: 1rem;
   margin: 1px;
   background-color: @surface0;
   margin-left: 0.01rem;
+  border: 1px solid @text;
 }
 
 
-/* --- STYLE CÁC MODULE: Phẳng (ĐÃ TỐI ƯU KHOẢNG CÁCH) --- */
+/* --- TINH CHỈNH TỪNG MODULE (MÀU SẮC, VIỀN, KHOẢNG CÁCH) --- */
 
-
-
-/*
-#tray {
- min-width: 12px;
- margin: 0 3px;
-}
-*/
-#pulseaudio { margin-right: 4px; }
-#tray { margin-right: 4px; }
-#bluetooth { margin-right: 4px; }
-#network { margin-right: 4px; }
-#custom-expand-icon { margin-right: 4px; }
-#clock { margin-left: 4px; }
+/* --- Module bên trái --- */
 #custom-omarchy { 
+  color: @mauve;
   margin-right: 4px;
   margin-left: 0.1rem;
 }
-#custom-update { margin-left: 4px; }
+#custom-update { 
+  color: @peach;
+  font-size: 12px;
+  margin-left: 4px;
+  /* Viền đã được định nghĩa ở block #custom-update, #custom-omarchy */
+}
 
-/* --- MPRIS (Music Player) --- */ 
+/* --- Module giữa --- */
 #mpris {
+ border: 1px solid @maroon;
  color: @text;
  margin-left: 4px;
 }
@@ -123,35 +116,66 @@ margin: 1px 0;
  font-size: 12px;
 }
 
+/* --- Module bên phải --- */
 
-/* --- MÀU SẮC CATPPUCCIN MOCHA CHO CÁC MODULE PHẲNG --- */
-#custom-omarchy { color: @mauve; }
-#custom-update { color: @peach; font-size: 12px; }
-#network { color: @teal; }
-#bluetooth { color: @blue; }
-#pulseaudio { color: @maroon; }
-#battery { color: @green; }
-#battery.charging { color: @green; }
-#battery.warning:not(.charging) { color: @red; }
-#clock { color: @blue; }
-#custom-screenrecording-indicator { color: @yellow; font-size: 10px; }
-#custom-screenrecording-indicator.active { color: @red; }
 
-/* --- CÁC ĐỊNH NGHĨA KHÁC --- */
+#pulseaudio { 
+  color: @maroon;
+  margin-right: 4px;
+  border: 1px solid @maroon;
+}
+
+#tray { 
+  margin-right: 4px;
+  border: 1px solid @text;
+}
+
+#bluetooth { 
+  color: @blue;
+  margin-right: 4px;
+  border: 1px solid @blue;
+}
+
+#network { 
+  color: @teal;
+  margin-right: 4px;
+  border: 1px solid @teal;
+}
+
+#battery,
+#battery.charging { 
+  color: @green;
+  border: 1px solid @green;
+}
+#battery.warning:not(.charging) { 
+  color: @red;
+  border: 1px solid @red;
+}
+
+#clock { 
+  color: @blue;
+  margin-left: 4px;
+  border: 1px solid @blue;
+}
+
+#custom-screenrecording-indicator {
+   color: @yellow;
+   font-size: 10px;
+   border: 1px solid @red;
+}
+#custom-screenrecording-indicator.active {
+   color: @red;
+}
+
 tooltip {
- background-color: @mantle;
+ background-color: @surface0;
  padding: 5px;
  border: 1px solid @mauve;
  border-radius: 8px;
 }
 
-.hidden {
- opacity: 0;
-}
-
-/* --- SỬA LỖI MENU TRONG SUỐT (Theme Catppuccin Mocha) --- */
- menu, popover {
- background-color: @mantle;
+menu, popover {
+ background-color: @surface0;
  padding: 5px;
  border-radius: 8px;
  border: 1px solid @mauve;
