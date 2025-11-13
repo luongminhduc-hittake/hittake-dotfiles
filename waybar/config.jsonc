@@ -1,0 +1,144 @@
+{
+  "reload_style_on_change": true,
+  "layer": "top",
+  "position": "top",
+  "spacing": 0,
+  "height": 27,
+  
+  // --- THỨ TỰ MODULES (Workspaces ở TRUNG TÂM) ---
+  "modules-left": [
+    "custom/omarchy", 
+    "hyprland/workspaces",
+    "custom/update",
+    "mpris"
+  ],
+  "modules-center": [
+     "custom/screenrecording-indicator"
+  ],
+  "modules-right": [
+    "tray",
+    //"group/tray-expander",
+    "bluetooth",
+    "network",
+    "pulseaudio",
+    "battery",
+    "clock"
+  ],
+  
+  // --- ĐỊNH NGHĨA MODULES ---
+  
+  "hyprland/workspaces": {
+         "on-click": "activate",
+         "disable-scroll": true,
+         "sort-by-name": true,
+         "format": "{icon}",
+         "format-icons": {
+            "active": "<span color='#cba6f7'></span>", 
+            "persistent": "<span color='#bac2de'></span>", 
+            "default": "<span color='#585b70'></span>"
+          },
+        "persistent-workspaces": {
+            "1": [], "2": [], "3": []
+    }
+  },
+  "custom/omarchy": {
+    "format": " Thinktake", 
+    "on-click": "omarchy-menu",
+    "on-click-right": "xdg-terminal-exec",
+    "tooltip-format": "Arch Menu\n\nSuper + Space"
+  },
+  "custom/update": {
+    "format": " Update available",
+    "exec": "omarchy-update-available",
+    "on-click": "omarchy-launch-floating-terminal-with-presentation omarchy-update",
+    "tooltip-format": "Omarchy update available",
+    "signal": 7,
+    "interval": 3600
+  },
+  "clock": {
+    "format": "⏱ {:L%H:%M}",
+    //"format-alt": "⏱{:L%d %B %Y}",
+    "tooltip-format": "🗓️ {:L%d %B %Y}",
+    //"tooltip": false,
+    "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select"
+  },
+  "network": {
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "format": "{icon} {essid}",
+    "format-wifi": "{icon} {essid}",
+    "format-ethernet": "󰀂 {ifname}",
+    "format-disconnected": "󰤮 ",
+    "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-disconnected": "Disconnected",
+    "interval": 3,
+    "spacing": 1,
+    "on-click": "omarchy-launch-wifi"
+  },
+  "battery": {
+    "format": "{icon} {capacity}%",
+    "format-discharging": "{icon} {capacity}%",
+    "format-charging": "{icon} {capacity}%",
+    "format-plugged": " {capacity}%",
+    "format-icons": {
+      "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+      "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+    "format-full": "󰂅",
+    "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
+    "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
+    "interval": 5,
+    "on-click": "omarchy-menu power",
+    "states": {
+      "warning": 30,
+      "critical": 20
+    }
+  },
+  "bluetooth": {
+    "format": "",
+    "format-disabled": "󰂲",
+    "format-connected": " {device_alias}",
+    //"tooltip-format": "Devices connected: {num_connections}",
+    "tooltip-format-connected-battery": "{device_alias} - {device_battery_percentage}%",
+    "on-click": "blueberry"
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "on-click": "xdg-terminal-exec --app-id=com.omarchy.Wiremix -e wiremix",
+    "on-click-right": "pamixer -t",
+    "tooltip-format": "Playing at {volume}%",
+    "scroll-step": 5,
+    "format-muted": " ",
+    "format-icons": {
+      "default": ["", "", " "]
+    }
+  },
+/*  "group/tray-expander": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 600,
+      "children-class": "tray-group-item"
+    },
+    "modules": ["custom/expand-icon", "tray"]
+  },
+  "custom/expand-icon": {
+    "format": "",
+    "tooltip": false
+  }, */
+  "custom/screenrecording-indicator": {
+    "on-click": "omarchy-cmd-screenrecord",
+    "exec": "$OMARCHY_PATH/default/waybar/indicators/screen-recording.sh",
+    "signal": 8,
+    "return-type": "json"
+  },
+  "tray": {
+    "icon-size": 12,
+    "spacing": 17
+  },
+  "mpris": {
+    "format": "{title} - {artist}",
+    "format-paused": "Paused",
+    "format-stopped": "No music",
+    "interval": 1
+  }
+}
