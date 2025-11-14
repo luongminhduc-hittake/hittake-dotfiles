@@ -41,7 +41,7 @@
  /* Nếu muốn nền màu @base thì đổi "transparent" thành "@base" */
  background: transparent;
  color: @text;
- margin: 5px 5px;
+ margin: 2px 5px;
 }
 
 /* Khoảng cách cho nhóm module trái/phải */
@@ -64,7 +64,7 @@
   padding: 0 9px;
   background-color: @surface0;
   border-radius: 20px;
-  margin: 1px 0;
+  margin: 0 0;
 }
 
 /* Style riêng cho module Omarchy và Update (padding khác và có viền) */
@@ -73,14 +73,14 @@
   padding: 0 10px;
   background-color: @surface0;
   border-radius: 20px;
-  margin: 1px 0;
+  margin: 0 0;
   border: 1px solid @mauve;
 }
 
 /* Style riêng cho Workspaces */
 #workspaces {
   border-radius: 1rem;
-  margin: 1px;
+  margin: 0;
   background-color: @surface0;
   margin-left: 0.01rem;
   border: 1px solid @text;
@@ -93,7 +93,7 @@
 #custom-omarchy { 
   color: @mauve;
   margin-right: 4px;
-  margin-left: 0.1rem;
+  margin-left: -3px;
 }
 #custom-update { 
   color: @peach;
@@ -105,7 +105,7 @@
 /* --- Module giữa --- */
 #mpris {
  border: 1px solid @text;
- color: @text;
+ color: @teal;
  margin-right: 4px;
 }
 #mpris .title {
@@ -126,7 +126,7 @@
 }
 
 #tray { 
-  margin-left: 4px;
+  margin-right: 4px;
   border: 1px solid @text;
 }
 
