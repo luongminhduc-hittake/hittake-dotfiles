@@ -6,11 +6,3 @@ dotfiles for Omarchy by hittake.
 
 first time ricing btw
 
----
-
-## 🚀 Installation
-
-```bash
-git clone https://github.com/hittake/hittake-dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-stow .
