@@ -2,17 +2,15 @@
 
 dotfiles for Omarchy by hittake.
 
-![Desktop](<img width="3200" height="2000" alt="image" src="https://github.com/user-attachments/assets/682001dc-07e1-4223-96fa-8830f3801e63" />)
+![Desktop](https://github.com/user-attachments/assets/682001dc-07e1-4223-96fa-8830f3801e63)
 
 first time ricing btw
 
 ---
 
-
 ## 🚀 Installation
 
 ```bash
-git clone [https://github.com/hittake/hittake-dotfiles.git](https://github.com/hittake/hittake-dotfiles.git) ~/.dotfiles
+git clone https://github.com/hittake/hittake-dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 stow .
-
