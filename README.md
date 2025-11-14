@@ -1,2 +1,2 @@
 # hittake-dotfiles
-dotfile omarchy arch linux cua hittake
+dotfile for omarchy for by hittake based on catpuccin mocha theme
