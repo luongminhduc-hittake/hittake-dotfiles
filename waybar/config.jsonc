@@ -9,14 +9,14 @@
   "modules-left": [
     "custom/omarchy", 
     "hyprland/workspaces",
-    "tray",
     "custom/update"
   ],
   "modules-center": [
+     "mpris",
      "custom/screenrecording-indicator"
   ],
   "modules-right": [
-    "mpris",
+    "tray",
     "bluetooth",
     "network",
     "pulseaudio",
@@ -120,9 +120,15 @@
     "spacing": 17
   },
   "mpris": {
-    "format": "{title}",
-    "format-paused": "Paused",
-    "format-stopped": "No music",
+    "format": " {title} - {artist}",
+    "format-paused": " {title} - {artist}",
+    "format-stopped": "",
+    "player": "spotify",
+
+    "max-length": 50,
+    "on-click": "playerctl --player=spotify play-pause",
+    "on-scroll-up": "playerctl --player=spotify next",
+    "on-scroll-down": "playerctl --player=spotify previous",
     "interval": 1
   }
 }
