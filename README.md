@@ -13,4 +13,7 @@ dotfiles for Omarchy by hittake.
 ![Waybar](https://github.com/user-attachments/assets/fc2befc9-c480-49ae-94e9-257ce1bb765a)
 
 
+**APPLICATION LAUNCHER**
+![mako](https://github.com/user-attachments/assets/75cd47bf-a3db-41c4-8828-3f183d9efdcb)
+
 first time ricing btw
