@@ -2,7 +2,10 @@
 
 dotfiles for Omarchy by hittake.
 
-![Desktop](https://github.com/user-attachments/assets/682001dc-07e1-4223-96fa-8830f3801e63)
+![Clean Desktop](https://github.com/user-attachments/assets/68f6abf3-5f9d-48e3-b07e-b9c38f94ac03)
+
+![Busy Desktop](https://github.com/user-attachments/assets/41ec3dd1-d384-44f0-8d73-fa3e245b5a32)
+
+![Waybar](https://github.com/user-attachments/assets/fc2befc9-c480-49ae-94e9-257ce1bb765a)
 
 first time ricing btw
-
