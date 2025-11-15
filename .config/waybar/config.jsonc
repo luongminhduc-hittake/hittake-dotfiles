@@ -13,6 +13,7 @@
   ],
   "modules-center": [
      "mpris",
+     "cava",
      "custom/screenrecording-indicator"
   ],
   "modules-right": [
@@ -120,9 +121,9 @@
     "spacing": 17
   },
   "mpris": {
-    "format": " {title} - {artist}",
-    "format-paused": " {title} - {artist}",
-    "format-stopped": "",
+    "format": "⏸ {title} - {artist}",
+    "format-paused": "▶ {title} - {artist}",
+    "format-stopped": "",
     "player": "spotify",
 
     "max-length": 50,
