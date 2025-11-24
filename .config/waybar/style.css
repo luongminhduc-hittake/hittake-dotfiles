@@ -52,7 +52,7 @@
 /* -----------------------------------------------------------------------------
  * BASE MODULE STYLE (Hình viên thuốc)
  * -------------------------------------------------------------------------- */
-#hyprland-window, #window,
+#hyprland-window, #window, #custom-cava,
 #bluetooth, #pulseaudio, #battery, #network,
 #clock, #tray, #mpris, 
 #custom-expand-icon, #custom-screenrecording-indicator,
@@ -138,8 +138,14 @@
     margin-left: 4px;
     border: 1px solid @mauve;
 }
+#custom-cava {
+    margin-left: 4px;
+    margin-right: 4px;
+    border: 1px solid @blue;
+}
 
 /* --- CENTER MODULES --- */
+
 #mpris {
     color: @green;
     margin-right: 4px;
@@ -200,7 +206,7 @@
 tooltip {
     background-color: @surface0;
     padding: 5px;
-    border: 1px solid @mauve;
+    border: 1px solid @lavender;
     border-radius: 8px;
 }
 
@@ -214,4 +220,13 @@ menu, popover {
 menu menuitem:hover, popover menuitem:hover {
     background-color: @surface1;
     border-radius: 4px;
+}
+#custom-cava {
+    color: @blue;    /* Mã màu Mauve (Catppuccin) */
+    font-family: "JetBrainsMono Nerd Font"; /* Hoặc font bạn đang dùng */
+    font-size: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
+    min-width: 0px; /* BẮT BUỘC để ẩn hoàn toàn khi không có nhạc */
+    transition: all 0.3s ease-in-out;
 }

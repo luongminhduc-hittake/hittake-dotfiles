@@ -9,11 +9,11 @@
   "modules-left": [
     "custom/omarchy", 
     "hyprland/workspaces",
+    "custom/cava",
     "custom/update"
   ],
   "modules-center": [
      "mpris",
-     "cava",
      "custom/screenrecording-indicator"
   ],
   "modules-right": [
@@ -131,5 +131,10 @@
     "on-scroll-up": "playerctl --player=spotify next",
     "on-scroll-down": "playerctl --player=spotify previous",
     "interval": 1
-  }
+  },
+  "custom/cava": {
+    "exec": "~/.config/waybar/scripts/cava.sh",
+    "format": "{}",
+    "tooltip": false,
+}
 }
