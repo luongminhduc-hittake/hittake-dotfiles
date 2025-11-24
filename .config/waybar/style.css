@@ -100,7 +100,7 @@
 #workspaces button.active {
     min-width: 20px;        /* Dài ra hình viên thuốc */
     padding: 0 5px;
-    background-color: @green;
+    background-color: @lavender;
     color: transparent;     /* Ẩn text/icon */
     font-size: 0px;
     opacity: 1;
