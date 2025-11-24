@@ -156,7 +156,7 @@
 
 #tray {
     margin-right: 4px;
-    border: 1px solid @text;
+    border: 1px solid @lavender;
 }
 
 #bluetooth {
@@ -207,7 +207,7 @@ tooltip {
 menu, popover {
     background-color: @surface0;
     padding: 5px;
-    border: 1px solid @mauve;
+    border: 1px solid @lavender;
     border-radius: 8px;
 }
 
