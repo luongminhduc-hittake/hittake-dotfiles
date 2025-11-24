@@ -27,20 +27,20 @@
   
   // --- ĐỊNH NGHĨA MODULES ---
   
-  "hyprland/workspaces": {
-         "on-click": "activate",
-         "disable-scroll": true,
-         "sort-by-name": true,
-         "format": "{icon}",
-         "format-icons": {
-            "active": "<span color='#cba6f7'></span>", 
-            "persistent": "<span color='#bac2de'></span>", 
-            "default": "<span color='#585b70'></span>"
-          },
-        "persistent-workspaces": {
-            "1": [], "2": [], "3": []
+"hyprland/workspaces": {
+    "on-click": "activate",
+    "sort-by-number": true,
+    "format": "{icon}",
+    "format-icons": {
+        "default": " ", 
+        "active": " "
+    },
+    "persistent-workspaces": {
+        "1": [], 
+        "2": [], 
+        "3": [] 
     }
-  },
+},
   "custom/omarchy": {
     "format": " Menu", 
     "on-click": "omarchy-menu",
@@ -97,11 +97,11 @@
     "format-disabled": "󰂲",
     "format-connected": " {device_alias}",
     "tooltip-format-connected-battery": "{device_alias} - {device_battery_percentage}%",
-    "on-click": "blueberry"
+    "on-click": "omarchy-launch-bluetooth"
   },
   "pulseaudio": {
     "format": "{icon} {volume}%",
-    "on-click": "xdg-terminal-exec --app-id=com.omarchy.Wiremix -e wiremix",
+    "on-click": "omarchy-launch-or-focus-tui wiremix",
     "on-click-right": "pamixer -t",
     "tooltip-format": "Playing at {volume}%",
     "scroll-step": 5,
