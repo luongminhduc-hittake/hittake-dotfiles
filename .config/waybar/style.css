@@ -106,18 +106,10 @@
     opacity: 1;
 }
 
-/* 4. Hiệu ứng Hover lên thanh Workspaces */
-#workspaces:hover button {
-    min-width: 20px;        /* Các chấm giãn ra */
-    color: @mauve;          /* Chấm đổi màu tím */
-    background-color: @surface1;
-    opacity: 1;             /* Hiện rõ tất cả (kể cả empty) */
-}
-
 /* Giữ nguyên nút Active khi đang hover */
 #workspaces:hover button.active {
-    min-width: 30px;
-    background-color: @mauve;
+    min-width: 20px;
+    background-color: @green;
     color: transparent;
     
 }
@@ -125,7 +117,7 @@
 /* Hover vào từng nút con */
 #workspaces button:hover {
     background-color: @surface2;
-    color: @mauve;
+    color: @red;
     opacity: 1;
 }
 
