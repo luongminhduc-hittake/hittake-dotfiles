@@ -81,7 +81,7 @@
     margin: 0 2px;
     border-radius: 15px;
     background-color: transparent;
-    color: @overlay1;       /* Chấm xám */
+    color: @text;       /* Chấm xám */
     font-size: 10px;
     min-width: 10px;
     opacity: 1;             /* Hiện rõ nếu có cửa sổ */
