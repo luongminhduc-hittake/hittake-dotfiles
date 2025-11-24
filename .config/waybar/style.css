@@ -70,7 +70,7 @@
     background-color: @surface0;
     padding: 5px;
     border-radius: 20px;
-    border: 1px solid @mauve;
+    border: 1px solid @lavender;
     font-weight: bold;
     transition: all 0.3s ease;
 }
@@ -78,28 +78,29 @@
 /* 1. Trạng thái cơ bản (Occupied - Có cửa sổ) */
 #workspaces button {
     padding: 0 2px;
-    margin: 0 2px;
+    margin: 0 5px;
     border-radius: 15px;
     background-color: transparent;
-    color: @text;       /* Chấm xám */
+    color: @lavender;       /* Chấm xám */
     font-size: 10px;
     min-width: 10px;
     opacity: 1;             /* Hiện rõ nếu có cửa sổ */
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
     box-shadow: none;
     text-shadow: none;
 }
 
 /* 2. Trạng thái Trống (Empty - Không cửa sổ) */
 #workspaces button.empty {
-    opacity: 0.3;           /* Mờ đi */
+    color: @lavender;
+    opacity: 0.3;
 }
 
 /* 3. Trạng thái Active (Đang chọn) - Luôn hiện rõ */
 #workspaces button.active {
-    min-width: 30px;        /* Dài ra hình viên thuốc */
+    min-width: 20px;        /* Dài ra hình viên thuốc */
     padding: 0 5px;
-    background-color: @mauve;
+    background-color: @green;
     color: transparent;     /* Ẩn text/icon */
     font-size: 0px;
     opacity: 1;
@@ -118,6 +119,7 @@
     min-width: 30px;
     background-color: @mauve;
     color: transparent;
+    
 }
 
 /* Hover vào từng nút con */
@@ -147,9 +149,9 @@
 
 /* --- CENTER MODULES --- */
 #mpris {
-    color: @teal;
+    color: @green;
     margin-right: 4px;
-    border: 1px solid @text;
+    border: 1px solid @teal;
 }
 #mpris .title { font-weight: bold; }
 
