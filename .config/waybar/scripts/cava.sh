@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# Ký tự thanh sóng (lưu ý ký tự đầu tiên là khoảng trắng cho số 0)
 bar=" ▂▃▄▅▆▇█"
 dict="s/;//g;"
 
-# Tạo từ điển để sed thay thế số thành ký tự
 i=0
 while [ $i -lt ${#bar} ]
 do
@@ -12,15 +10,17 @@ do
     i=$((i=i+1))
 done
 
-# Chạy Cava -> Pipe qua Sed -> Đọc từng dòng
+# --- SỬA ĐOẠN NÀY ---
 cava -p ~/.config/cava/config_waybar | sed -u "$dict" | while read -r line; do
-    # Xóa tất cả khoảng trắng trong dòng
     trimmed="${line// /}"
     
-    # Nếu sau khi xóa khoảng trắng mà chuỗi rỗng (tức là toàn bộ là im lặng)
     if [ -z "$trimmed" ]; then
-        echo "" # In ra rỗng để Waybar ẩn module
+        # Nếu im lặng, in rỗng để ẩn. 
+        # Thêm "|| exit 1" để nếu Waybar tắt, script cũng tắt luôn
+        echo "" || exit 1 
     else
-        echo "$line" # Có tiếng thì in ra
+        # Nếu có nhạc, in sóng
+        # Thêm "|| exit 1" để tránh lỗi Broken pipe
+        echo "$line" || exit 1 
     fi
 done
