@@ -1,232 +1,222 @@
-/* -----------------------------------------------------------------------------
- * THEME: Catppuccin Mocha
- * -------------------------------------------------------------------------- */
-@define-color rosewater #f5e0dc;
-@define-color flamingo #f2cdcd;
-@define-color pink #f5c2e7;
-@define-color mauve #cba6f7;
-@define-color red #f38ba8;
-@define-color maroon #eba0ac;
-@define-color peach #fab387;
-@define-color yellow #f9e2af;
-@define-color green #a6e3a1;
-@define-color teal #94e2d5;
-@define-color sky #89dceb;
-@define-color sapphire #74c7ec;
-@define-color blue #89b4fa;
-@define-color lavender #b4befe;
-@define-color text #cdd6f4;
-@define-color subtext1 #bac2de;
-@define-color subtext0 #a6adc8;
-@define-color overlay2 #9399b2;
-@define-color overlay1 #7f849c;
-@define-color overlay0 #6c7086;
-@define-color surface2 #585b70;
-@define-color surface1 #45475a;
-@define-color surface0 #313244;
-@define-color base #1e1e2e;
-@define-color mantle #181825;
-@define-color crust #11111b;
+/* @import "../omarchy/current/theme/waybar.css"; */
 
-/* -----------------------------------------------------------------------------
- * GLOBAL RESET & DEFAULTS
- * -------------------------------------------------------------------------- */
 * {
-    border: none;
-    border-radius: 0;
-    min-height: 0;
-    font-family: 'JetBrainsMono Nerd Font', monospace;
-    font-size: 12px;
+  /* background-color: @background; */
+  /* color: @foreground; */
+
+  border: none;
+  border-radius: 0px;
+  padding: 1.55px 1.55px;
+  min-height: 0;
+  font-family: 'JetBrainsMono Nerd Font';
+  font-size: 12px;
 }
 
-#waybar {
-    background: transparent; /* Hoặc @base nếu muốn nền tối */
-    color: @text;
-    margin: 2px 5px;
+window#waybar {
+  background-color:  #181825;
+  transition-property: background-color;
+  transition-duration: 0.5s;
+  margin-top: 0;
 }
 
-/* Khoảng cách nhóm module */
-.modules-left { margin-left: 8px; }
-.modules-right { margin-right: 8px; }
-
-/* -----------------------------------------------------------------------------
- * BASE MODULE STYLE (Hình viên thuốc)
- * -------------------------------------------------------------------------- */
-#hyprland-window, #window, #custom-cava,
-#bluetooth, #pulseaudio, #battery, #network,
-#clock, #tray, #mpris, 
-#custom-expand-icon, #custom-screenrecording-indicator,
-#custom-update, #custom-omarchy {
-    background-color: @surface0;
-    border-radius: 20px;
-    padding: 0 10px;
-    margin: 0;
+window#waybar.hidden {
+  opacity: 0.5;
 }
 
-/* -----------------------------------------------------------------------------
- * WORKSPACES (Logic: Expand + Opacity)
- * -------------------------------------------------------------------------- */
+.modules-left {
+  margin-left: 4px;
+}
+
+.modules-right {
+  margin-right: 4px;
+}
+
+/* #workspaces button { */
+/*   all: initial; */
+/*   padding: 0 6px; */
+/*   margin: 0 1.5px; */
+/*   min-width: 9px; */
+/* } */
+
 #workspaces {
-    background-color: @surface0;
-    padding: 5px;
-    border-radius: 20px;
-    border: 1px solid @lavender;
-    font-weight: bold;
-    transition: all 0.3s ease;
+  background-color: #181825;
+  transition: all 0.1s ease;
 }
 
-/* 1. Trạng thái cơ bản (Occupied - Có cửa sổ) */
 #workspaces button {
-    padding: 0 2px;
-    margin: 0 5px;
-    border-radius: 15px;
-    background-color: transparent;
-    color: @lavender;       /* Chấm xám */
-    font-size: 10px;
-    min-width: 10px;
-    opacity: 1;             /* Hiện rõ nếu có cửa sổ */
-    transition: all 0.2s ease-in-out;
-    box-shadow: none;
-    text-shadow: none;
+  all: initial;
+  /* Remove GTK theme values (waybar #1351) */
+  min-width: 0;
+  /* Fix weird spacing in materia (waybar #450) */
+  box-shadow: inset 0 -3px transparent;
+  /* Use box-shadow instead of border so the text isn't offset */
+  padding: 0px 8px;
+  margin: 2px 0px;
+  border-radius: 4px;
+  transition: all 0.1s ease-in-out;
+  background-color: #1e1e2e;
+  color: #cdd6f4;
 }
 
-/* 2. Trạng thái Trống (Empty - Không cửa sổ) */
-#workspaces button.empty {
-    color: @lavender;
-    opacity: 0.3;
-}
-
-/* 3. Trạng thái Active (Đang chọn) - Luôn hiện rõ */
 #workspaces button.active {
-    min-width: 20px;        /* Dài ra hình viên thuốc */
-    padding: 0 5px;
-    background-color: @lavender;
-    color: transparent;     /* Ẩn text/icon */
-    font-size: 0px;
-    opacity: 1;
+  color: #1e1e2e;
+  background-color: #eed49f;
 }
 
-/* Giữ nguyên nút Active khi đang hover */
-#workspaces:hover button.active {
-    min-width: 20px;
-    background-color: @green;
-    color: transparent;
-    
-}
-
-/* Hover vào từng nút con */
 #workspaces button:hover {
-    background-color: @surface2;
-    color: @red;
-    opacity: 1;
+  box-shadow: inherit;
+  text-shadow: inherit;
+  color: #1e1e2e;
+  background-color: #cdd6f4;
 }
 
-/* -----------------------------------------------------------------------------
- * MODULE SPECIFICS (Màu sắc & Viền)
- * -------------------------------------------------------------------------- */
-
-/* --- LEFT MODULES --- */
-#custom-omarchy {
-    color: @mauve;
-    margin-right: 4px;
-    margin-left: -3px;
-    border: 1px solid @mauve;
+#workspaces button.urgent {
+  background-color: #f38ba8;
 }
 
-#custom-update {
-    color: @peach;
-    margin-left: 4px;
-    border: 1px solid @mauve;
-}
-#custom-cava {
-    margin-left: 4px;
-    margin-right: 4px;
-    border: 1px solid @blue;
-}
+/* #workspaces button.active, #workspaces button.persistent, #window, #cpu, #pulseaudio, #clock{ */
+/*   color: #F7768E; */
+/* } */
 
-/* --- CENTER MODULES --- */
 
-#mpris {
-    color: @green;
-    margin-right: 4px;
-    border: 1px solid @teal;
-}
-#mpris .title { font-weight: bold; }
-
-/* --- RIGHT MODULES --- */
-#pulseaudio {
-    color: @maroon;
-    margin-right: 4px;
-    border: 1px solid @maroon;
-}
-
-#tray {
-    margin-right: 4px;
-    border: 1px solid @lavender;
-}
-
-#bluetooth {
-    color: @blue;
-    margin-right: 4px;
-    border: 1px solid @blue;
+#memory {
+  color: #E0AF68;
 }
 
 #network {
-    color: @teal;
-    margin-right: 4px;
-    border: 1px solid @teal;
+  color: #9DCD6A;
 }
 
-#battery {
-    color: @green;
-    border: 1px solid @green;
-}
-#battery.charging { color: @green; }
-#battery.warning:not(.charging) {
-    color: @red;
-    border: 1px solid @red;
+/* #workspaces button.empty, #bluetooth{ */
+/*   color: #79C7F6; */
+/* } */
+
+#battery, #custom-weather, #mpris {
+  color: #BA9AF6;
 }
 
-#clock {
-    color: @blue;
-    margin-left: 4px;
-    border: 1px solid @blue;
+#backlight, #custom-weather, #memory, #mpris, #window, #workspaces, #clock,
+#tray,
+#cpu,
+#battery,
+#network,
+#bluetooth,
+#pulseaudio,
+#custom-omarchy,
+#custom-screenrecording-indicator,
+#custom-update {
+  min-width: 6px;
+  margin: 5 0 5 7.5;
+  padding: 0 10 0 10;
+  border-radius: 4px;
+  background-color: #1e1e2e;
+  color: #181825;
+  transition: all 0.1s ease-in-out;
+
 }
 
-#custom-screenrecording-indicator {
-    color: @yellow;
-    font-size: 10px;
-    border: 1px solid @red;
+#custom-expand-icon {
+  margin-right: 7px;
 }
-#custom-screenrecording-indicator.active { color: @red; }
 
-/* -----------------------------------------------------------------------------
- * TOOLTIPS & MENUS
- * -------------------------------------------------------------------------- */
 tooltip {
-    background-color: @surface0;
-    padding: 5px;
-    border: 1px solid @lavender;
-    border-radius: 8px;
+  background-color: #181825;
+  padding: 5px;
+  border: 1px solid #BA9AF6;  
+  border-radius: 4px;
 }
-
 menu, popover {
-    background-color: @surface0;
+    background-color: #181825;
     padding: 5px;
-    border: 1px solid @lavender;
-    border-radius: 8px;
+    border: 1px solid #BA9AF6;
+    border-radius: 4px;
 }
 
 menu menuitem:hover, popover menuitem:hover {
-    background-color: @surface1;
+    background-color: #1e1e2e;
     border-radius: 4px;
 }
-#custom-cava {
-    color: @blue;    /* Mã màu Mauve (Catppuccin) */
-    font-family: "JetBrainsMono Nerd Font"; /* Hoặc font bạn đang dùng */
-    font-size: 16px;
-    padding-left: 10px;
-    padding-right: 10px;
-    min-width: 0px; /* BẮT BUỘC để ẩn hoàn toàn khi không có nhạc */
-    transition: all 0.3s ease-in-out;
+#window{
+  background-color: #f4dbd6;
+  transition: all 0.1s ease-in-out;
+}
+
+#custom-update {
+  font-size: 10px;
+}
+
+#network {
+  background-color: #94e2d5;
+  padding-right: 17px;
+  padding: 0 7 0 10;
+}
+
+#backlight{
+  background-color: #f5bde6;
+}
+
+#bluetooth{
+  background-color: #f9e2af;
+}
+
+#cpu {
+  background-color: #fab387;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+#clock {
+  font-family: JetBrainsMono Nerd Font;
+  background-color: #cba6f7;
+}
+
+#battery {
+  background-color: #f38ba8;  
+}
+
+#custom-weather{
+  background-color: #a6e3a1;
+}
+
+#pulseaudio{
+  background-color: #89dceb;
+  padding: 0 1 0 1;
+}
+
+#custom-screenrecording-indicator {
+  min-width: 12px;
+  margin-left: 8.75px;
+  font-size: 10px;
+
+  padding: 0 11 0 10;
+}
+
+#custom-screenrecording-indicator.active {
+  color: #a55555;
+}
+
+
+/* EXTRA FIX! */
+
+#mpris {
+  margin-right: 10px;
+  background-color:#fab387;
+}
+
+tooltip {
+  border-radius: 10px;
+}
+#custom-omarchy {
+  background-color: #8aadf4;
+  margin-left: 0px;
+  padding: 0 12 0 8px;
+}
+
+window#waybar.empty #window{
+  padding-right: 2.5px;
+}
+#tray {
+    color: #ffffff;
 }
