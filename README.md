@@ -51,3 +51,22 @@ cp .config/omarchy/branding/about.txt ~/.config/omarchy/branding/
 # Run
 fastfetch
 ```
+
+### Zen Browser
+1. In Zen Browser, navigate to `about:support` and check your **Profile Directory** (typically `~/.zen/<profile-id>/`).
+2. Open `about:config` and make sure `toolkit.legacyUserProfileCustomizations.stylesheets` is set to `true`.
+3. Copy the `chrome` styles to your profile directory:
+```bash
+cp -r others/for-zen-browser/chrome ~/.zen/<profile-id>/
+```
+4. Restart Zen Browser.
+
+### Vesktop (Discord)
+- **CLI**:
+```bash
+mkdir -p ~/.config/vesktop/settings
+cat others/vesktop/pastecss.txt >> ~/.config/vesktop/settings/quickCss.css
+```
+- **GUI**:
+  Open Vesktop $\rightarrow$ **Settings** $\rightarrow$ **Themes** (Vencord section) $\rightarrow$ Paste the content of `others/vesktop/pastecss.txt` into **Quick CSS**.
+
