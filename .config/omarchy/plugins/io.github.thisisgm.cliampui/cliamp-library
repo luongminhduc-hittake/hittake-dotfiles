@@ -1,0 +1,318 @@
+#!/usr/bin/env python3
+
+"""Browse the Subsonic library cliamp is streaming from, and play an album.
+
+The whole point of headless mode is that the music never stops, so opening the TUI
+just to pick an album is the wrong shape: the daemon has to die for the TUI to take
+the socket. It does not have to happen at all.
+
+cliamp publishes the current stream URL in `status --json`, and that URL already
+carries a salted Subsonic token. Reusing it reaches getAlbumList2, getAlbum and
+getArtists, so the library can be browsed without this script ever holding a
+credential, and an album can be played by building a cliamp playlist from the track
+URLs and loading it. The daemon stays up throughout.
+
+With nothing playing there is no URL to borrow, which used to leave the library
+unbrowsable after a daemon restart. The playlists on disk hold the same token in
+their resolved stream URLs, so they are read as a fallback.
+
+Usage:
+  cliamp-library albums [limit]        list albums as JSON
+  cliamp-library search <query>        albums and songs matching a query
+  cliamp-library play <albumId>        replace the queue with that album and play
+  cliamp-library play-song <songId>    replace the queue with that one song and play
+
+Every row carries a "kind" so one list can mix albums and songs.
+"""
+
+import json
+import os
+import subprocess
+import sys
+import urllib.parse
+import urllib.request
+
+# Only these carry identity and auth. format and id are rebuilt per request.
+AUTH_FIELDS = ("u", "t", "s", "c", "v")
+TIMEOUT_SEC = 8
+
+# Reused and overwritten, so a play leaves no artifact in the user's playlist list.
+SCRATCH_PLAYLIST = "cliampui"
+
+
+def cliamp(*args):
+    try:
+        out = subprocess.run(
+            ["cliamp", *args], capture_output=True, text=True, timeout=15
+        )
+        return out.stdout
+    except Exception:
+        return ""
+
+
+def current_stream_url():
+    try:
+        return (json.loads(cliamp("status", "--json")).get("track") or {}).get("path") or ""
+    except Exception:
+        return ""
+
+
+def playlist_stream_url():
+    """A stream URL out of the playlists on disk, for when nothing is playing.
+
+    A daemon that started with an empty queue publishes no URL to borrow a token from.
+    The playlists already hold the same token in their resolved stream URLs, so nothing
+    has to be cached to browse from a cold start.
+    """
+    folder = os.path.expanduser("~/.config/cliamp/playlists")
+    try:
+        names = os.listdir(folder)
+    except OSError:
+        return ""
+
+    # Newest first, so a rotated token is found before a stale one.
+    paths = [os.path.join(folder, n) for n in names if n.endswith(".toml")]
+    try:
+        paths.sort(key=os.path.getmtime, reverse=True)
+    except OSError:
+        pass
+
+    for path in paths:
+        try:
+            with open(path, encoding="utf-8") as handle:
+                body = handle.read()
+        except (OSError, UnicodeDecodeError):
+            continue
+        # Sample line: path = "https://host/rest/stream?c=cliamp&s=..&t=..&format=raw&id=X"
+        for line in body.split("\n"):
+            line = line.strip()
+            if not line.startswith('path = "'):
+                continue
+            url = line[len('path = "'):].rstrip('"')
+            if "/rest/stream?" in url:
+                return url
+    return ""
+
+
+def server_from(url):
+    """Split a /rest/stream URL into (host, auth query). Returns (None, None) if it is
+    not a Subsonic stream, which is the case for radio and local files."""
+    if "?" not in url:
+        return None, None
+    base, query = url.split("?", 1)
+    if not base.startswith("https://") or not base.endswith("/rest/stream"):
+        return None, None
+    host = base[: -len("/rest/stream")]
+    kept = [
+        pair
+        for pair in query.split("&")
+        if pair.split("=", 1)[0] in AUTH_FIELDS and "=" in pair
+    ]
+    if not kept:
+        return None, None
+    return host, "&".join(kept)
+
+
+def call(host, auth, endpoint, **params):
+    query = auth + "&f=json&" + urllib.parse.urlencode(params)
+    with urllib.request.urlopen(
+        host + "/rest/" + endpoint + "?" + query, timeout=TIMEOUT_SEC
+    ) as response:
+        body = json.loads(response.read().decode())
+    return body.get("subsonic-response") or {}
+
+
+def album_row(a):
+    return {
+        "kind": "album",
+        "id": a.get("id"),
+        "name": a.get("name") or "",
+        "artist": a.get("artist") or "",
+        "year": a.get("year") or 0,
+        "songCount": a.get("songCount") or 0,
+    }
+
+
+# Sample input, a search3 song: {"id":"a1","title":"T","artist":"A","duration":214}
+def song_row(s):
+    return {
+        "kind": "song",
+        "id": s.get("id"),
+        "name": s.get("title") or "",
+        "artist": s.get("artist") or "",
+        "album": s.get("album") or "",
+        "duration": s.get("duration") or 0,
+    }
+
+
+def albums(host, auth, limit):
+    data = call(
+        host, auth, "getAlbumList2", type="alphabeticalByName", size=limit
+    )
+    found = (data.get("albumList2") or {}).get("album") or []
+    return [album_row(a) for a in found]
+
+
+def search(host, auth, query, limit):
+    """search3 matches album, artist and song names, so one field covers all three.
+    Artists are asked for at zero because an artist name already surfaces their albums,
+    and an artist row would have nothing to play on its own."""
+    data = call(
+        host,
+        auth,
+        "search3",
+        query=query,
+        albumCount=limit,
+        artistCount=0,
+        songCount=limit,
+    )
+    result = data.get("searchResult3") or {}
+    rows = [album_row(a) for a in (result.get("album") or [])]
+    rows.extend(song_row(s) for s in (result.get("song") or []))
+    return rows
+
+
+def play_album(host, auth, album_id):
+    data = call(host, auth, "getAlbum", id=album_id)
+    album = data.get("album") or {}
+    songs = album.get("song") or []
+    if not songs:
+        return 1
+
+    urls = [
+        host + "/rest/stream?" + auth + "&format=raw&id=" + urllib.parse.quote(str(s["id"]))
+        for s in songs
+        if s.get("id")
+    ]
+    if not urls:
+        return 1
+
+    # `playlist create` stats its arguments on disk, so it rejects stream URLs. The
+    # documented TOML format accepts http/https paths, so the file is written directly
+    # and loaded, which replaces the queue without the daemon ever stopping.
+    write_playlist(SCRATCH_PLAYLIST, album, songs, host, auth)
+    # Measured: load starts playback by itself, so a play here only adds a round trip.
+    cliamp("load", SCRATCH_PLAYLIST)
+    print(((album.get("artist") or "") + " - " + (album.get("name") or "")).strip(" -"))
+    return 0
+
+
+def play_song(host, auth, song_id):
+    """One song replaces the queue, the same way an album does. cliamp has no
+    jump-to-track command, so playing its album from the right place is not possible."""
+    data = call(host, auth, "getSong", id=song_id)
+    song = data.get("song") or {}
+    if not song.get("id"):
+        return 1
+
+    album = {
+        "id": song.get("albumId") or "",
+        "name": song.get("album") or "",
+        "artist": song.get("artist") or "",
+        "coverArt": song.get("coverArt") or "",
+    }
+    write_playlist(SCRATCH_PLAYLIST, album, [song], host, auth)
+    cliamp("load", SCRATCH_PLAYLIST)
+    print(((song.get("artist") or "") + " - " + (song.get("title") or "")).strip(" -"))
+    return 0
+
+
+def toml_escape(value):
+    return str(value).replace("\\", "\\\\").replace('"', '\\"')
+
+
+def write_playlist(name, album, songs, host, auth):
+    """Write a cliamp playlist TOML. Fields per the documented format; album_art_url is
+    included so the panel has artwork before the first status poll lands."""
+    path = os.path.join(
+        os.path.expanduser("~/.config/cliamp/playlists"), safe_name(name) + ".toml"
+    )
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+
+    art = host + "/rest/getCoverArt?" + auth + "&size=600&id=" + urllib.parse.quote(
+        str(album.get("coverArt") or album.get("id") or "")
+    )
+
+    lines = []
+    for song in songs:
+        if not song.get("id"):
+            continue
+        stream = (
+            host + "/rest/stream?" + auth + "&format=raw&id="
+            + urllib.parse.quote(str(song["id"]))
+        )
+        lines.append("[[track]]")
+        lines.append('path = "%s"' % toml_escape(stream))
+        lines.append('title = "%s"' % toml_escape(song.get("title") or ""))
+        lines.append('artist = "%s"' % toml_escape(song.get("artist") or album.get("artist") or ""))
+        lines.append('album = "%s"' % toml_escape(album.get("name") or ""))
+        lines.append('album_art_url = "%s"' % toml_escape(art))
+        if song.get("track"):
+            lines.append("track_number = %d" % int(song["track"]))
+        if song.get("duration"):
+            lines.append("duration_secs = %d" % int(song["duration"]))
+        if song.get("year"):
+            lines.append("year = %d" % int(song["year"]))
+        lines.append("")
+
+    # Unlink first, then refuse an existing path, so a symlink cannot redirect the write.
+    try:
+        os.unlink(path)
+    except FileNotFoundError:
+        pass
+    # The resolved stream URLs carry the salted Subsonic token, so keep it owner only.
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8") as handle:
+        handle.write("\n".join(lines))
+
+
+def safe_name(name):
+    # cliamp derives the playlist name from the filename, so keep it a plain basename.
+    cleaned = "".join(c for c in name if c not in "/\\\0")
+    return cleaned.strip() or "Album"
+
+
+def main():
+    args = sys.argv[1:]
+    if not args:
+        return 2
+
+    host, auth = server_from(current_stream_url())
+    if not host:
+        host, auth = server_from(playlist_stream_url())
+    if not host:
+        # Neither a playing track nor a playlist on disk held a token to borrow.
+        if args[0] in ("albums", "search"):
+            print("[]")
+        return 0
+
+    if args[0] == "albums":
+        limit = int(args[1]) if len(args) > 1 and args[1].isdigit() else 100
+        print(json.dumps(albums(host, auth, limit)))
+        return 0
+
+    if args[0] == "search":
+        query = " ".join(args[1:]).strip()
+        if not query:
+            print(json.dumps(albums(host, auth, 200)))
+            return 0
+        print(json.dumps(search(host, auth, query, 100)))
+        return 0
+
+    if args[0] == "play" and len(args) > 1:
+        return play_album(host, auth, args[1])
+
+    if args[0] == "play-song" and len(args) > 1:
+        return play_song(host, auth, args[1])
+
+    return 2
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except Exception:
+        # Never let a browse failure take the panel down; an empty list is the answer.
+        if len(sys.argv) > 1 and sys.argv[1] in ("albums", "search"):
+            print("[]")
+        sys.exit(1)
