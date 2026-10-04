@@ -37,6 +37,9 @@
           "hidden": []
         },
         {
+          "id": "dev.egoist.cpu-usage"
+        },
+        {
           "id": "omarchy.tailscale"
         },
         {
@@ -57,14 +60,14 @@
         },
         {
           "id": "omarchy.clock",
-          "format": "yyyy-MM-dd HH:mm",
+          "format": "dddd HH:mm",
           "formatAlt": "d MMMM 'W'ww yyyy",
           "verticalFormat": "HH\n—\nmm"
         }
       ]
     },
     "position": "bottom",
-    "transparent": false
+    "transparent": true
   },
   "disabledPlugins": [
     "omarchy.reminders",

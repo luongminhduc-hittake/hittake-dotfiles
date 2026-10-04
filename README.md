@@ -16,8 +16,8 @@ Personal dotfiles for Arch Linux / Omarchy with Hyprland and Quickshell.
 .config/
 ├── hypr/               # Hyprland Lua configs (bindings, looknfeel, input, monitors, autostart)
 ├── omarchy/            # Omarchy shell layout (shell.json, shell.toml), plugins & branding
-│   ├── branding/       # Custom anime ASCII logo (about.txt)
-│   ├── plugins/        # Custom bar plugins (hittake.indicators, cliampui)
+│   ├── branding/       # Custom anime ASCII logo (about.txt) & screensaver (screensaver.txt)
+│   ├── plugins/        # Custom bar plugins (hittake.indicators, cliampui, cpu-usage)
 │   └── themes/
 │       └── hittake-cappu/ # Full standalone Omarchy theme
 ├── fastfetch/          # Fastfetch configuration (config.jsonc)
