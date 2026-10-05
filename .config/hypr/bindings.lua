@@ -29,7 +29,7 @@
 -- o.bind("SUPER + PERIOD", nil, "omarchy-shell shell toggle omarchy.emojis")
 
 hl.unbind("SUPER + SHIFT + S")
-o.bind("SUPER + SHIFT + S", screenshot, "omarchy-capture-screenshot")
+o.bind("SUPER + SHIFT + S", "Screenshot", "omarchy-capture-screenshot")
 
 hl.unbind("SUPER + W")
 hl.bind("SUPER + Q", hl.dsp.window.close())
@@ -78,3 +78,9 @@ o.bind("SUPER + I", "Toggle float (900x600 centered) / tile", function()
     hl.dispatch(hl.dsp.window.center())
   end
 end)
+
+-- Volume adjustment: 2% per step for smooth knob rotation
+hl.unbind("XF86AudioRaiseVolume")
+hl.unbind("XF86AudioLowerVolume")
+o.bind("XF86AudioRaiseVolume", "Volume up", "omarchy-audio-output-volume +2", { locked = true, repeating = true })
+o.bind("XF86AudioLowerVolume", "Volume down", "omarchy-audio-output-volume -2", { locked = true, repeating = true })
